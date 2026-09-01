@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Tu sangre, tu territorio · Sintrom</title>
+  <meta name="description" content="Gestión personal de anticoagulación con acenocumarol">
+  <meta name="theme-color" content="#0a0a0c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Sintrom">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0a0c'/%3E%3Cpath d='M50 20 C 30 35, 25 55, 35 70 C 42 80, 58 80, 65 70 C 75 55, 70 35, 50 20 Z' fill='%23f43f5e'/%3E%3C/svg%3E">
+
+  <!-- Tailwind compilado LOCALMENTE -->
+  <link rel="stylesheet" href="vendor/styles.css">
+
+  <!-- Librerías React, ReactDOM, Recharts — TODAS LOCALES -->
+  <script src="vendor/react.js"></script>
+  <script src="vendor/react-dom.js"></script>
+  <script src="vendor/prop-types.js"></script>
+  <script src="vendor/recharts.js"></script>
+
+  <style>
+    :root { --bg: #0a0a0c; --text: #f5f0e8; }
+    /* Fuentes con fallback robusto: si Google Fonts no carga, usamos system */
+    body {
+      background: var(--bg);
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
+      color: var(--text);
+      margin: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-display { font-family: 'Fraunces', Georgia, 'Times New Roman', serif; letter-spacing: -0.02em; }
+    em { font-family: 'Fraunces', Georgia, 'Times New Roman', serif; }
+    .grain::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+      opacity: 0.04; z-index: 1;
+    }
+    input[type="range"] { height: 4px; accent-color: #f43f5e; }
+    ::-webkit-scrollbar { display: none; }
+    .scroll-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    .loader { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--bg); z-index: 9999; transition: opacity 0.3s; flex-direction: column; gap: 16px; }
+    .loader.hide { opacity: 0; pointer-events: none; }
+    .loader-pulse { width: 40px; height: 40px; background: #f43f5e; border-radius: 50%; animation: pulse 1.2s infinite ease-in-out; }
+    .loader-text { color: rgba(245,240,232,0.4); font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; }
+    .error-screen { padding: 40px; max-width: 500px; text-align: center; color: var(--text); }
+    .error-screen h1 { font-family: 'Fraunces', Georgia, serif; font-size: 28px; margin-bottom: 16px; }
+    .error-screen p { opacity: 0.7; line-height: 1.6; font-size: 14px; }
+    @keyframes pulse { 0%, 100% { transform: scale(0.8); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 1; } }
+  </style>
+
+  <!-- Cargar Google Fonts en último lugar y sin bloquear: si falla la app sigue funcionando -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+</head>
+<body>
+  <div id="loader" class="loader">
+    <div class="loader-pulse"></div>
+    <div class="loader-text" id="loader-text">cargando</div>
+  </div>
+  <div id="root"></div>
+
+  <!-- Timeout de seguridad: si en 15 segundos sigue cargando, mostrar error -->
+  <script>
+    setTimeout(function() {
+      var loader = document.getElementById('loader');
+      var root = document.getElementById('root');
+      if (loader && !loader.classList.contains('hide') && (!root || !root.hasChildNodes())) {
+        loader.innerHTML = '<div class="error-screen"><h1>Algo no cargó bien</h1><p>Si estás en el celular, abrí la app desde Chrome (no Samsung Internet ni Firefox). Si seguís con problema, refrescá la página o intentá borrar el caché.</p><p style="margin-top:20px;font-size:11px;opacity:0.4">Si querés ayuda: F12 → Console → captura de pantalla</p></div>';
+      }
+    }, 15000);
+  </script>
+
+  <script src="app.js"></script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('sw.js').catch(function(err) { console.log('SW reg failed:', err); });
+      });
+    }
+  </script>
+</body>
+</html>
