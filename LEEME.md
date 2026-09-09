@@ -22,17 +22,18 @@ No necesita internet para funcionar (todo lo pesado —React, Recharts, estilos�
 
 ---
 
-## 🚀 Cómo subirla a GitHub y publicarla (GitHub Pages)
+## 🚀 Publicarla con GitHub Pages (tu URL propia y permanente)
 
-1. Andá a **https://github.com/new** y creá un repositorio nuevo (público), por ejemplo llamado `sangre-territorio`. No marques ninguna casilla de "Add README" — dejalo vacío.
-2. En la página del repo recién creado, click en **"uploading an existing file"** (o "Add file" → "Upload files").
-3. Arrastrá **todo el contenido de esta carpeta** (incluida la carpeta `vendor/`) a la ventana de subida.
-4. Hacé commit ("Commit changes").
-5. Andá a **Settings → Pages** del repo. En "Build and deployment" → "Source", elegí **"GitHub Actions"**.
-6. Andá a la pestaña **"Actions"** del repo: debería haber corrido (o estar corriendo) el workflow "Deploy static site to GitHub Pages". Esperá a que termine (tilde verde).
-7. Tu app va a quedar publicada en `https://<tu-usuario>.github.io/sangre-territorio/`.
+El repositorio ya existe: **github.com/gabyfrancom/territorio-de-la-sangre**.
+Solo falta activar la publicación (una sola vez, 1 minuto):
 
-No hace falta tocar nada más: el workflow (`.github/workflows/deploy.yml`) ya está armado para publicar la app tal cual, sin ningún paso de build.
+1. Entrá a **https://github.com/gabyfrancom/territorio-de-la-sangre/settings/pages**
+2. En **"Build and deployment" → "Source"**, elegí **"Deploy from a branch"**.
+3. En **"Branch"**, elegí **main** y la carpeta **/(root)**. Tocá **Save**.
+4. Esperá 1-2 minutos. Tu app queda publicada en:
+   **https://gabyfrancom.github.io/territorio-de-la-sangre/**
+
+Esa URL es HTTPS, que es lo que Android necesita para instalar la app.
 
 ---
 
@@ -40,8 +41,8 @@ No hace falta tocar nada más: el workflow (`.github/workflows/deploy.yml`) ya e
 
 Una vez publicada en GitHub Pages (paso anterior), ya tenés una URL pública con HTTPS, que es lo que necesita una PWA para instalarse:
 
-1. En tu celular, abrí **Chrome** (no Samsung Browser, no Firefox — Chrome funciona mejor con PWAs).
-2. Entrá a la URL de GitHub Pages (`https://<tu-usuario>.github.io/sangre-territorio/`).
+1. En tu celular, abrí **Chrome** o **Edge** (ambos instalan PWAs perfectamente; evitá Samsung Internet y Firefox).
+2. Entrá a la URL de GitHub Pages (`https://gabyfrancom.github.io/territorio-de-la-sangre/`).
 3. Tocá los **tres puntos arriba a la derecha**.
 4. Elegí **"Instalar app"** (o "Añadir a pantalla de inicio").
 5. Confirmá.
@@ -60,7 +61,6 @@ Aparece en tu pantalla de inicio como cualquier otra app, con el ícono de la go
 | `manifest.json` | Le dice a Android que es instalable y cómo se ve |
 | `sw.js` | Service worker — hace que funcione offline |
 | `icon-192.png`, `icon-512.png`, `icon-512-maskable.png` | Íconos para distintos tamaños de pantalla |
-| `.github/workflows/deploy.yml` | Publica la app en GitHub Pages automáticamente en cada push |
 | `.nojekyll` | Le dice a GitHub que no procese esto como un sitio Jekyll |
 
 **No borres ninguno.** Todos son necesarios para que funcione.
@@ -80,7 +80,7 @@ Si la usás en computadora y celular, **cada uno tiene sus propios datos**. No s
 ## 🆘 Si algo no funciona
 
 - **No carga / pantalla en blanco:** abrí la consola del navegador (F12 → Console) y mirá si hay errores. Lo más probable es que falte algún archivo de `vendor/` — revisá que se haya subido completo.
-- **No se instala en Android:** tiene que ser Chrome, y la URL tiene que ser HTTPS (GitHub Pages ya cumple esto).
+- **No se instala en Android:** usá Chrome o Edge, y la URL tiene que ser HTTPS (GitHub Pages ya cumple esto).
 - **Los datos desaparecieron:** revisá que estés en el mismo dispositivo y navegador. Si limpiaste el historial/caché, los datos pueden haberse borrado.
 
 ---
