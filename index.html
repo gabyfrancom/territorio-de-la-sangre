@@ -73,7 +73,7 @@
       var loader = document.getElementById('loader');
       var root = document.getElementById('root');
       if (loader && !loader.classList.contains('hide') && (!root || !root.hasChildNodes())) {
-        loader.innerHTML = '<div class="error-screen"><h1>Algo no cargó bien</h1><p>Si estás en el celular, abrí la app desde Chrome (no Samsung Internet ni Firefox). Si seguís con problema, refrescá la página o intentá borrar el caché.</p><p style="margin-top:20px;font-size:11px;opacity:0.4">Si querés ayuda: F12 → Console → captura de pantalla</p></div>';
+        loader.innerHTML = '<div class="error-screen"><h1>Algo no cargó bien</h1><p>Si estás en el celular, abrí la app desde Chrome o Edge (no Samsung Internet ni Firefox). Si seguís con problema, refrescá la página o intentá borrar el caché.</p><p style="margin-top:20px;font-size:11px;opacity:0.4">Si querés ayuda: F12 → Console → captura de pantalla</p></div>';
       }
     }, 15000);
   </script>

@@ -1,4 +1,5 @@
 {
+  "id": ".",
   "name": "Tu sangre, tu territorio",
   "short_name": "Sintrom",
   "description": "Gestión personal de anticoagulación con acenocumarol",
@@ -9,7 +10,11 @@
   "background_color": "#0a0a0c",
   "theme_color": "#0a0a0c",
   "lang": "es",
-  "categories": ["health", "medical", "lifestyle"],
+  "categories": [
+    "health",
+    "medical",
+    "lifestyle"
+  ],
   "icons": [
     {
       "src": "icon-192.png",
@@ -29,5 +34,9 @@
       "type": "image/png",
       "purpose": "maskable"
     }
+  ],
+  "display_override": [
+    "window-controls-overlay",
+    "standalone"
   ]
 }

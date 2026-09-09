@@ -1,5 +1,5 @@
 // Service Worker — Tu sangre, tu territorio
-const CACHE_NAME = 'sangre-territorio-v1';
+const CACHE_NAME = 'sangre-territorio-v2';
 const CORE_FILES = [
   './',
   './index.html',
@@ -42,7 +42,11 @@ self.addEventListener('fetch', (event) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, cloned));
         }
         return response;
-      }).catch(() => cached);
+      }).catch(() => {
+        // Sin conexión y sin caché: si es una navegación, devolver la app
+        if (event.request.mode === 'navigate') return caches.match('./index.html');
+        return cached;
+      });
     })
   );
 });
