@@ -61,9 +61,21 @@ Aparece en tu pantalla de inicio como cualquier otra app, con el ícono de la go
 | `manifest.json` | Le dice a Android que es instalable y cómo se ve |
 | `sw.js` | Service worker — hace que funcione offline |
 | `icon-192.png`, `icon-512.png`, `icon-512-maskable.png` | Íconos para distintos tamaños de pantalla |
+| `backup.js` | Botón 💾 para exportar e importar respaldos de tus datos |
 | `.nojekyll` | Le dice a GitHub que no procese esto como un sitio Jekyll |
 
 **No borres ninguno.** Todos son necesarios para que funcione.
+
+---
+
+## 💾 Respaldar y restaurar tus datos
+
+La app tiene un botón flotante **💾** (abajo a la derecha):
+
+- **Exportar respaldo:** descarga un archivo `.json` con TODOS tus datos (INR, pauta, diario, incidencias, items personalizados). Guardalo en Drive, mandátelo por mail o dejalo donde quieras.
+- **Importar respaldo:** elegí ese archivo y tus datos se restauran en segundos. Sirve también para **pasar tus datos a otro celular o navegador**.
+
+Recomendación: exportá un respaldo una vez por mes, o antes de limpiar el navegador o cambiar de teléfono.
 
 ---
 

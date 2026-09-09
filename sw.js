@@ -1,9 +1,10 @@
 // Service Worker — Tu sangre, tu territorio
-const CACHE_NAME = 'sangre-territorio-v2';
+const CACHE_NAME = 'sangre-territorio-v3';
 const CORE_FILES = [
   './',
   './index.html',
   './app.js',
+  './backup.js',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
