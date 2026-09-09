@@ -68,12 +68,15 @@ Aparece en tu pantalla de inicio como cualquier otra app, con el ícono de la go
 
 ---
 
+
 ## 💾 Respaldar y restaurar tus datos
 
-La app tiene un botón flotante **💾** (abajo a la derecha):
+La app tiene un botón flotante **💾** (abajo a la derecha) con cuatro opciones:
 
-- **Exportar respaldo:** descarga un archivo `.json` con TODOS tus datos (INR, pauta, diario, incidencias, items personalizados). Guardalo en Drive, mandátelo por mail o dejalo donde quieras.
-- **Importar respaldo:** elegí ese archivo y tus datos se restauran en segundos. Sirve también para **pasar tus datos a otro celular o navegador**.
+- **Exportar datos (JSON):** respaldo completo de TODO (INR, pauta, diario, incidencias, items personalizados). Es el formato ideal para guardar y restaurar.
+- **Exportar a Excel (.xlsx):** tus datos en planilla, con una hoja por sección (INR, Diario, Incidencias, Pauta, etc.). También sirve como respaldo: se puede reimportar.
+- **Exportar a PDF:** un informe prolijo, listo para imprimir o llevarle al hematólogo.
+- **Importar respaldo:** elegí un archivo `.json` o `.xlsx` exportado antes y tus datos se restauran en segundos. Sirve también para **pasar tus datos a otro celular o navegador**.
 
 Recomendación: exportá un respaldo una vez por mes, o antes de limpiar el navegador o cambiar de teléfono.
 
