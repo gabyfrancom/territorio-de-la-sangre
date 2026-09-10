@@ -64,14 +64,40 @@
     { key: 'custom_suplementos',  sheet: 'Suplementos',  titulo: 'Suplementos personalizados' }
   ];
 
-  function pautaToRows(p) {
-    if (!p || !p.dosis) return [];
-    return Object.keys(p.dosis).map(function (dia) { return { dia: dia, dosis: p.dosis[dia] }; });
+  function getPautas() {
+    const ps = getJSON('sintrom_pautas', null);
+    if (Array.isArray(ps) && ps.length) return ps;
+    const old = getJSON('sintrom_pauta', null);
+    if (old && old.dosis) return [Object.assign({ desde: '', toma: {} }, old)];
+    return [];
   }
-  function rowsToPauta(rows) {
-    const dosis = {};
-    rows.forEach(function (r) { if (r.dia) dosis[String(r.dia)] = String(r.dosis == null ? '' : r.dosis); });
-    return Object.keys(dosis).length ? { dosis: dosis } : null;
+  function pautasToRows(list) {
+    if (!Array.isArray(list)) return [];
+    const rows = [];
+    list.forEach(function (p) {
+      if (!p || !p.dosis) return;
+      Object.keys(p.dosis).forEach(function (dia) {
+        rows.push({ desde: p.desde || '', dia: dia, indicada: p.dosis[dia], real: (p.toma || {})[dia] || '' });
+      });
+    });
+    return rows;
+  }
+  function rowsToPautas(rows) {
+    const porFecha = {};
+    rows.forEach(function (r) {
+      if (!r.dia) return;
+      const f = String(r.desde == null ? '' : r.desde);
+      if (!porFecha[f]) porFecha[f] = { desde: f, dosis: {}, toma: {} };
+      porFecha[f].dosis[String(r.dia)] = String(r.indicada == null ? (r.dosis == null ? '' : r.dosis) : r.indicada);
+      if (r.real != null && r.real !== '') porFecha[f].toma[String(r.dia)] = String(r.real);
+    });
+    const list = Object.keys(porFecha).map(function (f, i) {
+      const p = porFecha[f];
+      p.id = Date.now() + i;
+      if (!p.desde) p.desde = new Date().toISOString().slice(0, 10);
+      return p;
+    });
+    return list.length ? list : null;
   }
   function configToRows() {
     const t = getJSON('inr_target', null);
@@ -122,7 +148,7 @@
           hojas++;
         }
       });
-      const pauta = pautaToRows(getJSON('sintrom_pauta', null));
+      const pauta = pautasToRows(getPautas());
       if (pauta.length) { XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(pauta), 'Pauta'); hojas++; }
       const cfg = configToRows();
       if (cfg.length) { XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(cfg), 'Config'); hojas++; }
@@ -173,12 +199,14 @@
         if (pc) rows.push(['Proximo control', stripEmoji(pc)]);
         table(['Dato', 'Valor'], rows);
       }
-      // Pauta
-      const pauta = pautaToRows(getJSON('sintrom_pauta', null));
-      if (pauta.length) {
-        sectionTitle('Pauta semanal de Sintrom');
-        table(['Dia', 'Dosis'], pauta.map(function (r) { return [r.dia, String(r.dosis)]; }));
-      }
+      // Pautas (historial por fecha de inicio)
+      const pautas = getPautas();
+      pautas.forEach(function (p) {
+        const rows = pautasToRows([p]);
+        if (!rows.length) return;
+        sectionTitle('Pauta semanal de Sintrom' + (p.desde ? ' (desde ' + stripEmoji(p.desde) + ')' : ''));
+        table(['Dia', 'Indicada (mg)', 'Toma real (mg)'], rows.map(function (r) { return [r.dia, String(r.indicada), String(r.real)]; }));
+      });
       // Secciones tipo lista
       LIST_SECTIONS.forEach(function (sec) {
         const rows = getJSON(sec.key, []);
@@ -226,8 +254,8 @@
             });
             const wsP = wb.Sheets['Pauta'];
             if (wsP) {
-              const p = rowsToPauta(XLSX.utils.sheet_to_json(wsP));
-              if (p) { setJSON('sintrom_pauta', p); secciones++; }
+              const pl = rowsToPautas(XLSX.utils.sheet_to_json(wsP));
+              if (pl) { setJSON('sintrom_pautas', pl); secciones++; }
             }
             const wsC = wb.Sheets['Config'];
             if (wsC) { rowsToConfig(XLSX.utils.sheet_to_json(wsC)); secciones++; }
